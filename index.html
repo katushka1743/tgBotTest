@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Mini App Test</title>
-  <!-- Подключение скрипта Telegram Web App -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
@@ -18,6 +17,8 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
+      gap: 20px;
+      /* Отступ между элементами */
     }
 
     button {
@@ -28,31 +29,40 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
+      width: 80%;
+    }
+
+    button.secondary {
+      background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
+      color: var(--tg-theme-text-color, #000000);
     }
   </style>
 </head>
 
 <body>
   <h1 id="greeting">Привет!</h1>
-  <button id="closeBtn">Закрыть приложение</button>
+
+  <!-- Новая кнопка для отправки данных в бота -->
+  <button id="sendDataBtn">Отправить "Привет из Mini App" в бота</button>
+
+  <button id="closeBtn" class="secondary">Просто закрыть</button>
 
   <script>
-    // Инициализация Telegram Web App
     const tg = window.Telegram.WebApp;
-
-    // Сообщаем Telegram, что приложение готово
     tg.ready();
-
-    // Разворачиваем на весь экран
     tg.expand();
 
-    // Получаем имя пользователя, если доступно
     const user = tg.initDataUnsafe?.user;
     if (user) {
       document.getElementById('greeting').innerText = `Привет, ${user.first_name}!`;
     }
 
-    // Обработка кнопки закрытия
+    // Логика отправки данных в бота
+    document.getElementById('sendDataBtn').addEventListener('click', () => {
+      // Отправляем строку данных обратно в Telegram
+      tg.sendData("Пользователь нажал кнопку в Mini App!");
+    });
+
     document.getElementById('closeBtn').addEventListener('click', () => {
       tg.close();
     });
